@@ -1,8 +1,8 @@
 export const font = {
-  InterMedium: 'InterMedium',
-  InterRegular: 'InterRegular',
-  InterThin: 'InterThin',
-  InterBold: 'InterBold',
+  InterMedium: 'Inter-Medium',
+  InterRegular: 'Inter-Regular',
+  InterThin: 'Inter-Thin',
+  InterBold: 'Inter-Bold',
 }
 
 export const FONT_MEDIUM = {

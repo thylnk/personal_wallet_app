@@ -1,11 +1,27 @@
+import * as Font from 'expo-font';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import LoginScreen from './src/screens/LoginScreen';
+import LoginScreen from '~screens/LoginScreen';
+import useFonts from '~shared/hook/useFonts';
+import AppLoading from 'expo-app-loading';
 
 export default function App() {
+
+  const [isReady, SetIsReady] = useState(false);
+
+  const loadFonts = async () => {
+    await useFonts();
+  };
+
+  if (!isReady) {
+    return (
+      <AppLoading />
+    );
+  }
+
   return (
     <View style={styles.container}>
-      {/* <Text>Open up App.js to start working on your app!</Text> */}
       <LoginScreen />
       <StatusBar style="auto" />
     </View>

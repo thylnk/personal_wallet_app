@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { colors } from '~shared/config/colors';
-import { FONT_BOLD } from '~shared/config/fontFamily';
+import { FONT_BOLD, FONT_MEDIUM, FONT_REGULAR } from '~shared/config/fontFamily';
 
 const InputPrimary = (props) => {
 
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 22,
     color: colors.white,
-    fontFamily: FONT_BOLD
+    ...FONT_REGULAR
   }
 });
 

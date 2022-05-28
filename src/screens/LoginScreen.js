@@ -1,9 +1,9 @@
 import { Image, StyleSheet, Text, View } from "react-native"
-import Logo from '~assets/images/icon_horizontal.png';
+import Logo from 'assets/images/icon_horizontal.png';
 import InputPrimary from "~components/atoms/InputPrimary";
 import { colors } from "~shared/config/colors";
-
 import Icon from 'react-native-vector-icons/Ionicons';
+
 const myIcon = <Icon name="eye-off-outline" size={30} color={colors.primaryColor} />;
 
 const LoginScreen = () => {
