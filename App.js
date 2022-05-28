@@ -1,10 +1,10 @@
-import * as Font from 'expo-font';
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import LoginScreen from '~screens/LoginScreen';
-import useFonts from '~shared/hook/useFonts';
 import AppLoading from 'expo-app-loading';
+import useFonts from '~shared/hook/useFonts';
+import SignUpScreen from '~screens/Login/SignUpScreen';
+import { colors } from '~shared/config/colors';
 
 export default function App() {
 
@@ -16,13 +16,17 @@ export default function App() {
 
   if (!isReady) {
     return (
-      <AppLoading />
+      <AppLoading
+        startAsync={loadFonts}
+        onFinish={() => SetIsReady(true)}
+        onError={() => { }}
+      />
     );
   }
 
   return (
     <View style={styles.container}>
-      <LoginScreen />
+      <SignUpScreen />
       <StatusBar style="auto" />
     </View>
   );
@@ -31,7 +35,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.gray,
     alignItems: 'center',
     justifyContent: 'center',
   },

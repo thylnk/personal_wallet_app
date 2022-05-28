@@ -1,24 +1,29 @@
 import PropTypes from 'prop-types';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { colors } from '~shared/config/colors';
-import { FONT_BOLD, FONT_MEDIUM, FONT_REGULAR } from '~shared/config/fontFamily';
+import { FONT_REGULAR } from '~shared/config/fontFamily';
 
 const InputPrimary = (props) => {
-
-  const { placeholder, secureTextEntry, value, onChange, icon } = props
+  const { placeholder, secureTextEntry, value, onChange, icon, isIcon } = props;
 
   return (
     <View style={styles.container}>
-      <TextInput style={styles.text} placeholder={placeholder} placeholderTextColor={colors.white} secureTextEntry={secureTextEntry}></TextInput>
-      {/* {icon} */}
+      <TextInput
+        style={[styles.text, isIcon ? { width: '80%' } : { width: '100%' }]}
+        placeholder={placeholder}
+        placeholderTextColor={colors.white}
+        secureTextEntry={secureTextEntry}></TextInput>
+      <View style={styles.icon}>{icon}</View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
-    // width: 350,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     backgroundColor: colors.secondaryColor,
     marginTop: 15,
     borderRadius: 15,
@@ -28,18 +33,21 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 22,
     color: colors.white,
-    ...FONT_REGULAR
+    ...FONT_REGULAR,
+  },
+  icon: {
+    paddingRight: 22,
   }
 });
-
 
 InputPrimary.propTypes = {
   placeholder: PropTypes.string,
   secureTextEntry: PropTypes.bool,
-  icon: PropTypes.elementType,
+  icon: PropTypes.node,
   value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-}
+  isIcon: PropTypes.bool,
+};
 
 InputPrimary.defaultProps = {
   placeholder: '',
@@ -47,6 +55,7 @@ InputPrimary.defaultProps = {
   icon: <></>,
   value: '',
   onChange: () => { },
+  isIcon: false
 };
 
 export default InputPrimary;
