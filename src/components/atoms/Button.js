@@ -1,50 +1,66 @@
-import PropTypes from 'prop-types';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { colors } from '~shared/config/colors';
-import { FONT_BOLD } from '~shared/config/fontFamily';
+import PropTypes from "prop-types";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { colors } from "~shared/config/colors";
+import { FONT_BOLD } from "~shared/config/fontFamily";
 
 const Button = (props) => {
-  const { value, onChange, icon, isIcon } = props;
+  const { value, onChange, icon, direction, customStyle } = props;
 
   return (
-    // <View>
-    <TouchableOpacity style={styles.container}>
-      <Text style={styles.text}>{value}</Text>
+    <TouchableOpacity
+      style={[
+        styles.container,
+        direction === "left" ? { flexDirection: "row-reverse" } : {},
+        {
+          backgroundColor: customStyle?.backgroundColor || colors.lightDark,
+        },
+      ]}
+    >
+      <Text
+        style={[
+          styles.text,
+          { color: customStyle?.textColor || colors.white },
+        ]}
+      >
+        {value}
+      </Text>
+      {icon}
     </TouchableOpacity>
-
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    backgroundColor: colors.lightDark,
-    marginTop: 35,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 15,
   },
   text: {
-    color: colors.white,
     fontSize: 18,
     paddingVertical: 14,
     paddingHorizontal: 22,
-    color: colors.white,
-    textAlign: 'center',
+    textAlign: "center",
     ...FONT_BOLD,
   },
   icon: {
     paddingRight: 22,
-  }
+  },
 });
 
 Button.propTypes = {
-  value: PropTypes.string.isRequired
+  value: PropTypes.string.isRequired,
+  icon: PropTypes.node,
+  direction: PropTypes.objectOf(["left", "right"]),
+  customStyle: PropTypes.object
 };
 
 Button.defaultProps = {
-  value: 'Button'
+  value: "Button",
+  icon: <></>,
+  direction: "right",
+  customStyle: {}
 };
 
 export default Button;

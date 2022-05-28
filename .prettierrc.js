@@ -1,4 +1,4 @@
-{
+module.export = {
   "arrowParens": "always",
   "bracketSameLine": true,
   "bracketSpacing": true,

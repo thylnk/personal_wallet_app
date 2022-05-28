@@ -5,6 +5,7 @@ import AppLoading from 'expo-app-loading';
 import useFonts from '~shared/hook/useFonts';
 import SignUpScreen from '~screens/Login/SignUpScreen';
 import { colors } from '~shared/config/colors';
+import LoginScreen from '~screens/Login/LoginScreen';
 
 export default function App() {
 
@@ -26,7 +27,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <SignUpScreen />
+      <LoginScreen />
+      {/* <SignUpScreen /> */}
       <StatusBar style="auto" />
     </View>
   );
