@@ -1,26 +1,31 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native"
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { colors } from "~shared/styles/colors";
 import { FONT_REGULAR } from "~shared/config/fontFamily";
-import { container } from "~shared/styles/common";
+import { colors } from "~shared/styles/colors";
+import { container, wrapperContainer } from "~shared/styles/common";
 
 const PlusSquare = () => <Icon name="plus-square" size={36} />
 
 export default function HomeScreen() {
   return (
-    <ScrollView style={styles.container}>
-      <View>
+    <View style={styles.wrapperContainer}>
+      <ScrollView style={styles.container}>
         <View>
-          <Text>Hi Thy Le Ngoc Khanh</Text>
-          <Text>Welcome,</Text>
+          <View>
+            <Text>Hi Thy Le Ngoc Khanh</Text>
+            <Text>Welcome,</Text>
+          </View>
+          <PlusSquare />
         </View>
-        <PlusSquare />
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
+  wrapperContainer: {
+    ...wrapperContainer
+  },
   container: {
     ...container
   },
