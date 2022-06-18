@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { StyleSheet, TextInput, View } from 'react-native'
-import { colors } from '~shared/config/colors'
+import { colors } from '~shared/styles/colors'
 import { FONT_REGULAR } from '~shared/config/fontFamily'
 
 const InputPrimary = (props) => {

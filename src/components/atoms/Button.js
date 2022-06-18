@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { colors } from "~shared/config/colors";
+import { colors } from "~shared/styles/colors";
 import { FONT_BOLD } from "~shared/config/fontFamily";
 
 const Button = (props) => {
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 Button.propTypes = {
   value: PropTypes.string.isRequired,
   icon: PropTypes.node,
-  direction: PropTypes.objectOf(["left", "right"]),
+  direction: PropTypes.string,
   customStyle: PropTypes.object
 };
 
