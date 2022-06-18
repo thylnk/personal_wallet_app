@@ -2,7 +2,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { Link } from "@react-navigation/native";
 import Logo from "assets/images/icon_horizontal.png";
 import InputPrimary from "~components/atoms/InputPrimary";
-import { colors } from "~shared/config/colors";
+import { colors } from "~shared/styles/colors";
 import Icon from "react-native-vector-icons/Ionicons";
 import Button from "~components/atoms/Button";
 import { FONT_BOLD, FONT_REGULAR } from "~shared/config/fontFamily";

@@ -4,8 +4,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import useFonts from '~shared/hook/useFonts';
 import SignUpScreen from '~screens/Login/SignUpScreen';
-import { colors } from '~shared/config/colors';
+import { colors } from '~shared/styles/colors';
 import LoginScreen from '~screens/Login/LoginScreen';
+import HomeScreen from '~screens/HomeScreen';
 
 export default function App() {
 
@@ -27,8 +28,9 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <LoginScreen />
-      {/* <SignUpScreen /> */}
+      {/* <LoginScreen />
+      <SignUpScreen /> */}
+      <HomeScreen />
       <StatusBar style="auto" />
     </View>
   );
