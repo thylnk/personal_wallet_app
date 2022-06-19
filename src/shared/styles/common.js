@@ -31,6 +31,9 @@ export const spacing = StyleSheet.create({
   mt25: {
     marginTop: 25,
   },
+  my25: {
+    marginVertical: 25,
+  },
   mt15: {
     marginTop: 15
   }

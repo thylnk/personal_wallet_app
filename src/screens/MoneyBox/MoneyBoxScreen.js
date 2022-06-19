@@ -9,7 +9,7 @@ export default function MoneyBoxScreen() {
   return (
     <View style={styles.wrapperContainer}>
       {/* Top */}
-      <View style={[styles.flexRow]}>
+      <View style={styles.flexRow}>
         <View style={styles.wrapperTitle}>
           <Text style={text.textHeading}>Money Box</Text>
         </View>
@@ -18,7 +18,7 @@ export default function MoneyBoxScreen() {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.container}>
-        <View style={spacing.mt25}>
+        <View style={spacing.my25}>
           <View>
             <BoxItem />
             <BoxItem />

@@ -34,7 +34,8 @@ export default function HomeScreen({ navigation }) {
         <View style={spacing.mt25}>
           <View style={styles.flexRow}>
             <Text style={text.textTitleDefault}>Recently Transactions</Text>
-            <Button value="All" onClick={() => navigation.push('Transaction')} />
+            <Button value="All"
+              onClick={() => navigation.navigate('MainScreen', { screen: 'Transaction', })} />
           </View>
           <View>
             <TransactionItem />
@@ -43,10 +44,11 @@ export default function HomeScreen({ navigation }) {
           </View>
         </View>
 
-        <View style={spacing.mt25}>
+        <View style={spacing.my25}>
           <View style={styles.flexRow}>
             <Text style={text.textTitleDefault}>Money Box</Text>
-            <Button value="All" onClick={() => navigation.navigate('MoneyBox')} />
+            <Button value="All"
+              onClick={() => navigation.navigate('MainScreen', { screen: 'MoneyBox', })} />
           </View>
           <View>
             <BoxItem />
@@ -54,7 +56,6 @@ export default function HomeScreen({ navigation }) {
             <BoxItem />
           </View>
         </View>
-
       </ScrollView>
     </View>
   )
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     ...wrapperContainer,
   },
   container: {
-    ...container
+    ...container,
   },
   textTitle: {
     color: colors.black,
