@@ -1,14 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native';
 import AppLoading from 'expo-app-loading';
-import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import NavigationStack from '~navigation/stack/StackNavigation';
-import HomeScreen from '~screens/Home/HomeScreen';
-import LoginScreen from '~screens/Login/LoginScreen';
-import SignUpScreen from '~screens/Login/SignUpScreen';
+import AppNavigation from '~navigation/AppNavigation';
 import useFonts from '~shared/hook/useFonts';
-import { colors } from '~shared/styles/colors';
 
 export default function App() {
 
@@ -29,7 +23,7 @@ export default function App() {
   }
   return (
     <NavigationContainer>
-      <NavigationStack />
+      <AppNavigation />
     </NavigationContainer >
   );
 }

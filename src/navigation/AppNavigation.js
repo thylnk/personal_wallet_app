@@ -12,7 +12,7 @@ const screenOptions = {
 
 const Stack = createStackNavigator();
 
-export default function NavigationStack() {
+export default function AppNavigation() {
   const [isSigned, setIsSigned] = useState(true);
   return (
     <Stack.Navigator
