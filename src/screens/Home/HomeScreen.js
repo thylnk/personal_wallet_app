@@ -46,7 +46,7 @@ export default function HomeScreen({ navigation }) {
         <View style={spacing.mt25}>
           <View style={styles.flexRow}>
             <Text style={text.textTitleDefault}>Money Box</Text>
-            <Button value="All" onClick={() => navigation.push('MoneyBox')} />
+            <Button value="All" onClick={() => navigation.navigate('MoneyBox')} />
           </View>
           <View>
             <BoxItem />

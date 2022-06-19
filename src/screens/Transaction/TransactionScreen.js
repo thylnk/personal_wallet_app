@@ -1,11 +1,6 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
-import Button from "~components/atoms/Button";
-import BoxItem from "~components/molecules/MoneyBox/BoxItem";
-import TransactionItem from "~components/molecules/Transaction/TransactionItem";
-import { FONT_BOLD, FONT_MEDIUM, FONT_REGULAR } from "~shared/config/fontFamily";
-import { Coffee } from '~shared/constants/icon';
-import { colors } from "~shared/styles/colors";
+import TransactionItem from "~components/molecules/Transaction/TransactionItem.js";
 import { container, flexRow, spacing, text, wrapperContainer } from "~shared/styles/common";
 
 const PlusSquare = () => <Icon name="plussquare" size={42} />

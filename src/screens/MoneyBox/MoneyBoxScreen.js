@@ -1,7 +1,6 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
 import BoxItem from "~components/molecules/MoneyBox/BoxItem";
-import TransactionItem from "~components/molecules/Transaction/TransactionItem";
 import { container, flexRow, spacing, text, wrapperContainer } from "~shared/styles/common";
 
 const PlusSquare = () => <Icon name="plussquare" size={42} />

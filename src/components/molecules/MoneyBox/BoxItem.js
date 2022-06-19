@@ -1,10 +1,9 @@
 import { StyleSheet, Text, View } from "react-native"
 import { FONT_BOLD, FONT_MEDIUM } from "~shared/config/fontFamily"
-import { Coffee } from "~shared/constants/icon"
 import { colors } from "~shared/styles/colors"
 import { flexRow } from "~shared/styles/common"
 
-const BoxItem = () => {
+export default function BoxItem() {
   return (
     <View style={styles.flexRow}>
       <View style={{ width: '40%' }}>
@@ -41,5 +40,3 @@ const styles = StyleSheet.create({
     ...FONT_MEDIUM
   },
 })
-
-export default BoxItem

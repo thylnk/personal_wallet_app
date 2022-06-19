@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from "react-native"
 import { FONT_BOLD, FONT_MEDIUM } from "~shared/config/fontFamily"
-import { Coffee } from "~shared/constants/icon"
+import { Coffee } from "~shared/constants/icon.js"
 import { colors } from "~shared/styles/colors"
 import { flexRow } from "~shared/styles/common"
 
-const TransactionItem = () => {
+export default function TransactionItem() {
   return (
     <View style={styles.flexRow}>
       <View style={{ flex: 0.75 }}><Coffee /></View>
@@ -50,5 +50,3 @@ const styles = StyleSheet.create({
     marginLeft: 'auto'
   },
 })
-
-export default TransactionItem
