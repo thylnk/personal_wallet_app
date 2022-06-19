@@ -4,6 +4,9 @@ import { StyleSheet, View } from 'react-native';
 import HomeScreen from '~screens/Home/HomeScreen';
 import LoginScreen from '~screens/Login/LoginScreen';
 import SignUpScreen from '~screens/Login/SignUpScreen';
+import MoneyBoxScreen from '~screens/MoneyBox/MoneyBoxScreen';
+import TransactionScreen from '~screens/Transaction/ListTransaction';
+import { MoneyBox } from '~shared/constants/icon';
 import { colors } from '~shared/styles/colors';
 
 const screenOptions = {
@@ -13,7 +16,7 @@ const screenOptions = {
 const Stack = createStackNavigator();
 
 export default function NavigationStack() {
-  const [isSigned, setIsSigned] = useState(false);
+  const [isSigned, setIsSigned] = useState(true);
   return (
     <Stack.Navigator
       initialRouteName={isSigned ? "Login" : "Home"}
@@ -23,8 +26,11 @@ export default function NavigationStack() {
     >
       {
         isSigned ? (
-          <Stack.Screen name="Home" component={HomeScreen} />
-
+          <>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Transaction" component={TransactionScreen} />
+            <Stack.Screen name="MoneyBox" component={MoneyBoxScreen} />
+          </>
         ) : (
           <>
             <Stack.Screen name="SignIn" component={LoginScreen} />

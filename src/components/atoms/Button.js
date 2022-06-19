@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { colors } from "~shared/styles/colors";
 import { FONT_BOLD } from "~shared/config/fontFamily";
+import { colors } from "~shared/styles/colors";
 
 const Button = (props) => {
-  const { value, onChange, icon, direction, customStyle } = props;
+  const { value, onClick, icon, direction, customStyle } = props;
 
   return (
     <TouchableOpacity
@@ -15,6 +15,7 @@ const Button = (props) => {
           backgroundColor: customStyle?.backgroundColor || colors.lightDark,
         },
       ]}
+      onPress={onClick}
     >
       <Text
         style={[
