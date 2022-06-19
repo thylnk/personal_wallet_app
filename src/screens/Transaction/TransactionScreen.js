@@ -18,7 +18,7 @@ export default function TransactionScreen() {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.container}>
-        <View style={spacing.mt25}>
+        <View style={spacing.my25}>
           <View>
             <TransactionItem />
             <TransactionItem />
