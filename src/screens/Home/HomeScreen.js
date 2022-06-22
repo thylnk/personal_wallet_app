@@ -18,7 +18,7 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.textUser} numberOfLines={1} ellipsizeMode='tail'>Hi Thy Le Ngoc Khanh</Text>
           <Text style={styles.textTitle}>Welcome,</Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ModalScreen', { title: 'Add new transaction' })} >
           <PlusSquare />
         </TouchableOpacity>
       </View>
