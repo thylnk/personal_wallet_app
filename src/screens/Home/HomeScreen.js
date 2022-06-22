@@ -18,9 +18,6 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.textUser} numberOfLines={1} ellipsizeMode='tail'>Hi Thy Le Ngoc Khanh</Text>
           <Text style={styles.textTitle}>Welcome,</Text>
         </View>
-        <TouchableOpacity>
-          <PlusSquare />
-        </TouchableOpacity>
       </View>
       <ScrollView style={styles.container}>
         <View style={styles.currentBalanceWrapper}>

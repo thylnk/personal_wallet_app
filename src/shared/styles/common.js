@@ -1,12 +1,10 @@
 import { StyleSheet } from "react-native";
-import { FONT_BOLD, FONT_REGULAR } from "~shared/config/fontFamily";
+import { FONT_BOLD, FONT_MEDIUM, FONT_REGULAR } from "~shared/config/fontFamily";
 import { colors } from "./colors";
 
 export const wrapperContainer = {
   flex: 1,
   backgroundColor: colors.gray,
-  alignItems: 'center',
-  justifyContent: 'center',
 };
 
 export const container = {
@@ -50,5 +48,17 @@ export const text = StyleSheet.create({
     fontSize: 24,
     color: colors.black,
     ...FONT_BOLD
+  },
+
+  textDefault: {
+    fontSize: 16,
+    color: colors.black,
+    ...FONT_MEDIUM
+  },
+
+  textLarger: {
+    fontSize: 18,
+    color: colors.black,
+    ...FONT_MEDIUM
   }
 })

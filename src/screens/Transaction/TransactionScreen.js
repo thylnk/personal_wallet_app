@@ -5,7 +5,7 @@ import { container, flexRow, spacing, text, wrapperContainer } from "~shared/sty
 
 const PlusSquare = () => <Icon name="plussquare" size={42} />
 
-export default function TransactionScreen() {
+export default function TransactionScreen({ navigation }) {
   return (
     <View style={styles.wrapperContainer}>
       {/* Top */}
@@ -13,16 +13,19 @@ export default function TransactionScreen() {
         <View style={styles.wrapperTitle}>
           <Text style={text.textHeading}>Transactions</Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ModalScreen', { title: 'Add New Transaction', action: 'add' })} >
           <PlusSquare />
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.container}>
         <View style={spacing.my25}>
           <View>
-            <TransactionItem />
-            <TransactionItem />
-            <TransactionItem />
+            <TouchableOpacity onPress={() => navigation.navigate('ModalScreen', { title: 'Edit Transaction', action: 'edit', id: 1 })} >
+              <TransactionItem />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('ModalScreen', { title: 'Edit Transaction', action: 'edit', id: 1 })} >
+              <TransactionItem />
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>

@@ -1,6 +1,9 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState } from 'react';
+import EditMoneyBoxModal from '~components/template/EditMoneyBoxModal';
+import MoneyBoxModal from '~components/template/MoneyBoxModal';
+import TransactionModal from '~components/template/TransactionModal';
 import HomeScreen from '~screens/Home/HomeScreen';
 import LoginScreen from '~screens/Login/LoginScreen';
 import SignUpScreen from '~screens/Login/SignUpScreen';
@@ -53,10 +56,14 @@ export default function AppNavigation() {
       {
         isSigned ? (
           <>
-            {/* <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Transaction" component={TransactionScreen} />
-            <Stack.Screen name="MoneyBox" component={MoneyBoxScreen} /> */}
-            <Stack.Screen name="MainScreen" component={MainScreen} />
+            <Stack.Group>
+              <Stack.Screen name="MainScreen" component={MainScreen} />
+            </Stack.Group>
+            <Stack.Group screenOptions={{ presentation: 'modal' }}>
+              <Stack.Screen name="ModalScreen" component={TransactionModal} />
+              <Stack.Screen name="AddMoneyBox" component={MoneyBoxModal} />
+              <Stack.Screen name="EditMoneyBox" component={EditMoneyBoxModal} />
+            </Stack.Group>
           </>
 
 
