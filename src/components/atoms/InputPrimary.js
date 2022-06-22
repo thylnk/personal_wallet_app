@@ -12,6 +12,7 @@ const InputPrimary = (props) => {
     icon,
     isIcon,
     customStyle,
+    editable
   } = props
 
   return (
@@ -19,8 +20,10 @@ const InputPrimary = (props) => {
       <TextInput
         style={[styles.text, isIcon ? { width: '80%' } : { width: '100%' }]}
         placeholder={placeholder}
+        value={value}
         placeholderTextColor={colors.white}
-        secureTextEntry={secureTextEntry}></TextInput>
+        secureTextEntry={secureTextEntry}
+        editable={editable}></TextInput>
       <View style={styles.icon}>{icon}</View>
     </View>
   )
@@ -55,6 +58,7 @@ InputPrimary.propTypes = {
   onChange: PropTypes.func.isRequired,
   isIcon: PropTypes.bool,
   style: PropTypes.object,
+  editable: PropTypes.bool
 }
 
 InputPrimary.defaultProps = {
@@ -65,6 +69,7 @@ InputPrimary.defaultProps = {
   onChange: () => { },
   isIcon: false,
   customStyle: { marginTop: 15 },
+  editable: true
 }
 
 export default InputPrimary

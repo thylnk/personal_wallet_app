@@ -5,22 +5,24 @@ import { container, flexRow, spacing, text, wrapperContainer } from "~shared/sty
 
 const PlusSquare = () => <Icon name="plussquare" size={42} />
 
-export default function MoneyBoxScreen() {
+export default function MoneyBoxScreen({ navigation }) {
   return (
     <View style={styles.wrapperContainer}>
       {/* Top */}
       <View style={styles.flexRow}>
-        <View style={styles.wrapperTitle}>
+        <View style={{ alignContent: 'center' }}>
           <Text style={text.textHeading}>Money Box</Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('AddMoneyBox', { title: 'Add New Money Box', action: 'add' })} >
           <PlusSquare />
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.container}>
         <View style={spacing.my25}>
           <View>
-            <BoxItem />
+            <TouchableOpacity onPress={() => navigation.navigate('EditMoneyBox', { action: 'edit', id: 1 })} >
+              <BoxItem />
+            </TouchableOpacity>
             <BoxItem />
             <BoxItem />
           </View>
