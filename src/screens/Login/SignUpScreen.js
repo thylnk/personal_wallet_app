@@ -1,6 +1,6 @@
 import { Link } from '@react-navigation/native'
 import Logo from 'assets/images/icon_horizontal.png'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, ScrollView, StyleSheet, Text, View, Animated } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Button from '~components/atoms/Button'
 import InputPrimary from '~components/atoms/InputPrimary'
@@ -15,26 +15,27 @@ const SignUpScreen = () => {
     <View style={styles.wrapperContainer}>
       <View style={styles.container}>
         <Image source={Logo} style={styles.image} />
-        <InputPrimary placeholder="Enter your email" customStyle={{ marginTop: 20 }} />
-        <InputPrimary
-          placeholder="Enter password"
-          secureTextEntry={true}
-          icon={myIcon}
-          isIcon={true}
-          customStyle={{ marginTop: 20 }}
-        />
-        <InputPrimary
-          placeholder="Enter password"
-          secureTextEntry={true}
-          icon={myIcon}
-          isIcon={true}
-          customStyle={{ marginTop: 20 }}
-        />
+        <ScrollView>
+          <InputPrimary placeholder="Enter your email" customStyle={{ marginTop: 20 }} />
+          <InputPrimary
+            placeholder="Enter password"
+            secureTextEntry={true}
+            icon={myIcon}
+            isIcon={true}
+            customStyle={{ marginTop: 20 }}
+          />
+          <InputPrimary
+            placeholder="Enter password"
+            secureTextEntry={true}
+            icon={myIcon}
+            isIcon={true}
+            customStyle={{ marginTop: 20 }}
+          />
 
-        <View style={{ marginTop: 35 }}>
-          <Button value="Sign up" />
-        </View>
-
+          <View style={{ marginTop: 35 }}>
+            <Button value="Sign up" />
+          </View>
+        </ScrollView>
         <View style={styles.wrapperCenter}>
           <Text style={styles.text}>
             Already an acount?{' '}
@@ -50,12 +51,14 @@ const SignUpScreen = () => {
 
 const styles = StyleSheet.create({
   wrapperContainer: {
-    ...wrapperContainer
+    ...wrapperContainer,
+    justifyContent: 'center',
+
   },
   container: {
     width: '100%',
     paddingHorizontal: 35,
-    marginTop: 40,
+    marginTop: 70,
   },
   image: {
     width: '100%',

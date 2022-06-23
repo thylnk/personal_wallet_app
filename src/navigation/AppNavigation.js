@@ -1,6 +1,7 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import EditMoneyBoxModal from '~components/template/EditMoneyBoxModal';
 import MoneyBoxModal from '~components/template/MoneyBoxModal';
 import TransactionModal from '~components/template/TransactionModal';
@@ -45,7 +46,7 @@ const MainScreen = ({ navigation }) => {
 }
 
 export default function AppNavigation() {
-  const [isSigned, setIsSigned] = useState(true);
+  const isSigned = useSelector((state) => state.user.isSignIn)
   return (
     <Stack.Navigator
       initialRouteName={isSigned ? "Login" : "MainScreen"}
