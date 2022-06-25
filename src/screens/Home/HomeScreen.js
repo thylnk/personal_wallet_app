@@ -1,15 +1,45 @@
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useDispatch } from "react-redux";
 import Button from "~components/atoms/Button";
 import BoxItem from "~components/molecules/MoneyBox/BoxItem";
 import TransactionItem from "~components/molecules/Transaction/TransactionItem";
+import { logout } from "~redux/slices/user.slice";
+import api from "~shared/config/api";
 import { FONT_BOLD, FONT_MEDIUM, FONT_REGULAR } from "~shared/config/fontFamily";
+import { TRANSACTION } from "~shared/constants/endpoints";
 import { colors } from "~shared/styles/colors";
 import { container, flexRow, spacing, text, wrapperContainer } from "~shared/styles/common";
+import { getAccessToken } from "~shared/utils/storerage";
 
-const PlusSquare = () => <Icon name="plussquare" size={42} />
+const Logout = () => <Icon name="logout" size={42} />
 
 export default function HomeScreen({ navigation }) {
+  const dispatch = useDispatch();
+  const [listTrans, setListTrans] = useState([]);
+
+  const fetchAllTrans = async () => {
+    const access = await getAccessToken();
+    try {
+      const res = await api.get(TRANSACTION, {
+        headers: {
+          Authorization: 'Bearer ' + access
+        } //the token is a variable which holds the token
+      });
+      setListTrans(res);
+    } catch (error) {
+      console.log(error)
+      if (error.response.status === 401) {
+        dispatch(logout())
+      }
+    }
+  }
+
+  useEffect(() => {
+    fetchAllTrans()
+  }, []);
+
   return (
     <View style={styles.wrapperContainer}>
       {/* Top */}
@@ -17,6 +47,11 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.wrapperTitle}>
           <Text style={styles.textUser} numberOfLines={1} ellipsizeMode='tail'>Hi Thy Le Ngoc Khanh</Text>
           <Text style={styles.textTitle}>Welcome,</Text>
+        </View>
+        <View>
+          <TouchableOpacity onPress={() => dispatch(logout())}>
+            <Logout />
+          </TouchableOpacity>
         </View>
       </View>
       <ScrollView style={styles.container}>
@@ -35,9 +70,11 @@ export default function HomeScreen({ navigation }) {
               onClick={() => navigation.navigate('MainScreen', { screen: 'Transaction', })} />
           </View>
           <View>
-            <TransactionItem />
-            <TransactionItem />
-            <TransactionItem />
+            {
+              listTrans?.map((item, index) => {
+                return <TransactionItem type={+item.type_id} money={item.money} key={item.created_at} />
+              })
+            }
           </View>
         </View>
 

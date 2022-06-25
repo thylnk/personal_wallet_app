@@ -1,6 +1,25 @@
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '~shared/styles/colors';
 
+export const IconTrans = [
+  {
+    type: 1,
+    icon: <Coffee />,
+  },
+  {
+    type: 2,
+    icon: <Purchase />
+  },
+  {
+    type: 3,
+    icon: <Transport />
+  },
+  {
+    type: 4,
+    icon: <Work />
+  }
+]
+
 export const Coffee = ({ size = 24 }) => <Icon name="coffee" size={size} />
 export const Purchase = ({ size = 24 }) => <Icon name='cart' size={size} />
 export const Transport = ({ size = 24 }) => <Icon name='bus' size={size} />

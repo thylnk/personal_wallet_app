@@ -5,29 +5,35 @@ import { getAccessToken, setAccessToken } from '~shared/utils/storerage';
 
 
 const initialValue = {
-  accessToken: '' || getAccessToken(),
+  accessToken: '',
   isSignIn: false,
 }
 
 export const login = createAsyncThunk('user/login', async (params, thunkAPI) => {
   try {
-    const response = await authApi.login(params)
+    const response = await authApi.login(params);
     return response;
   } catch (error) {
-    return thunkAPI.rejectWithValue({ message: error?.response?.data?.detail || "Error", status: error.response.status })
+    console.log(error)
+    return thunkAPI.rejectWithValue(error.response.status)
   }
 });
 
 const userSlice = createSlice({
   name: 'user',
   initialState: initialValue,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.isSignIn = false;
+      state.accessToken = ""
+    },
+  },
   extraReducers: {
     [login.rejected]: (state, action) => {
       state.isSignIn = false;
       state.accessToken = ""
-      if (action.payload.status !== 200) {
-        alert("Incorrect username or password")
+      if (action.payload) {
+        console.log(action.payload)
       }
     },
     [login.pending]: (state) => {
@@ -40,9 +46,11 @@ const userSlice = createSlice({
       state.isSignIn = true;
       state.accessToken = access;
       setAccessToken(access);
+      console.log(access);
     },
   }
 });
 
+export const { logout } = userSlice.actions
 const userReducer = userSlice.reducer;
 export default userReducer;

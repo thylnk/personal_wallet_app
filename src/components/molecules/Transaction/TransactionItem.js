@@ -2,10 +2,18 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { Swipeable } from "react-native-gesture-handler"
 import { FONT_BOLD, FONT_MEDIUM } from "~shared/config/fontFamily"
 import { Coffee } from "~shared/constants/icon.js"
+import { typeList } from "~shared/constants/transaction"
 import { colors } from "~shared/styles/colors"
 import { flexRow } from "~shared/styles/common"
 
-export default function TransactionItem() {
+export default function TransactionItem(props) {
+
+  const { type, money } = props
+
+  const handleCheckType = (type) => {
+    const currenttype = typeList.find((item) => item.id === type)
+    return currenttype
+  }
 
   const rightSwipe = () => {
     return (
@@ -60,11 +68,11 @@ export default function TransactionItem() {
       <View style={styles.flexRow}>
         <View style={{ flex: 0.75 }}><Coffee /></View>
         <View style={{ flex: 2 }}>
-          <Text style={styles.textTitle}>Coffee/Eating</Text>
+          <Text style={styles.textTitle}>{handleCheckType(type).value}</Text>
           <Text style={styles.textDate}>19/06/2022</Text>
         </View>
         <View style={{ flex: 2 }}>
-          <Text numberOfLines={1} style={[styles.text, { color: colors.lightPurple }]}>+ 300.000.000</Text>
+          <Text numberOfLines={1} style={[styles.text, { color: colors.lightPurple }]}>{money}</Text>
         </View>
       </View >
     </Swipeable>
