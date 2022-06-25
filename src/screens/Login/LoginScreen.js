@@ -1,10 +1,13 @@
 import { Link } from "@react-navigation/native";
 import Google from "assets/icons/google-icon.svg";
 import Logo from "assets/images/icon_horizontal.png";
+import { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import { useDispatch } from "react-redux";
 import Button from "~components/atoms/Button";
 import InputPrimary from "~components/atoms/InputPrimary";
+import { login } from "~redux/slices/user.slice";
 import { FONT_BOLD, FONT_REGULAR } from "~shared/config/fontFamily";
 import { colors } from "~shared/styles/colors";
 import { wrapperContainer } from "~shared/styles/common";
@@ -12,25 +15,41 @@ import { wrapperContainer } from "~shared/styles/common";
 const myIcon = <Icon name="eye-off-outline" size={30} color={colors.white} />;
 
 const LoginScreen = () => {
+  const dispatch = useDispatch();
+  const [params, setParams] = useState({
+    username: '',
+    password: ''
+  })
+
+  const handleLogin = async () => {
+    dispatch(login(params))
+  }
   return (
     <View style={styles.wrapperContainer}>
       <View style={styles.container}>
         <Image source={Logo} style={styles.image} />
         <InputPrimary
-          placeholder="Enter your email"
+          placeholder="Enter your username"
           customStyle={{ marginTop: 20 }}
+          value={params.username}
+          onChange={(value) => {
+            setParams((prev) => { return { ...prev, username: value } })
+          }}
         />
         <InputPrimary
-          placeholder="Enter password"
+          placeholder="Enter your password"
           secureTextEntry={true}
           icon={myIcon}
           isIcon={true}
           customStyle={{ marginTop: 20 }}
+          value={params.password}
+          onChange={(value) => {
+            setParams((prev) => { return { ...prev, password: value } })
+          }}
         />
 
         <View style={{ marginTop: 35 }}>
-          <Button
-            value="Sign up" />
+          <Button value="Sign up" onClick={handleLogin} />
         </View>
 
         <View style={{ marginVertical: 10 }}>
@@ -65,11 +84,12 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   wrapperContainer: {
     ...wrapperContainer,
+    justifyContent: 'center'
   },
   container: {
     width: "100%",
     paddingHorizontal: 35,
-    marginTop: 40,
+    marginTop: 100,
   },
   image: {
     width: "100%",

@@ -21,6 +21,7 @@ const InputPrimary = (props) => {
         style={[styles.text, isIcon ? { width: '80%' } : { width: '100%' }]}
         placeholder={placeholder}
         value={value}
+        onChangeText={onChange}
         placeholderTextColor={colors.white}
         secureTextEntry={secureTextEntry}
         editable={editable}></TextInput>

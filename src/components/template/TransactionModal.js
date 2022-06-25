@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -24,50 +24,75 @@ import Button from "~components/atoms/Button";
 import InputPrimary from "~components/atoms/InputPrimary";
 import { colors } from "~shared/styles/colors";
 import { FONT_MEDIUM } from "~shared/config/fontFamily";
+import { useDispatch } from "react-redux";
+import api from "~shared/config/api";
+import { TRANSACTION } from "~shared/constants/endpoints";
 
 export default function TransactionModal({ route, navigation }) {
+  const dispatch = useDispatch()
   const { title } = route.params;
-
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showDropDown, setShowDropDown] = useState(false);
   const [type, setType] = useState("");
-  const [showMultiSelectDropDown, setShowMultiSelectDropDown] = useState(false);
   const [color, setColors] = useState("");
   const [date, setDate] = useState(new Date());
-
-  const colorList = [
+  const [params, setParams] = useState(
     {
-      label: "White",
-      value: "white",
-    },
-    {
-      label: "Red",
-      value: "red",
-    },
-    {
-      label: "Blue",
-      value: "blue",
-    },
-    {
-      label: "Green",
-      value: "green",
-    },
-    {
-      label: "Orange",
-      value: "orange",
-    },
-  ];
+      "name": "",
+      "money": 0,
+      "type": 1,
+      "status": "COMPLETED",
+      "note": "",
+      "currency_unit": "VND",
+      "created_at": new Date().toISOString().slice(0, 10),
+      "note": ""
+    }
+  )
 
   const typeList = [
     {
-      label: "Income",
-      value: "income",
+      value: "Eating/Drinking",
+      label: 1,
     },
     {
-      label: "Expense",
-      value: "expense",
+      value: "Purchase",
+      label: 2,
+    },
+    {
+      value: "Transport",
+      label: 3,
+    },
+    {
+      value: "Income",
+      label: 4,
     },
   ];
+
+  const handleCheckType = () => {
+    const currentType = typeList.find((item) => item.value == type)
+    if (currentType) {
+      setParams((prev) => { return { ...prev, type: currentType.label } })
+    }
+  }
+
+  const handleSubmit = async () => {
+    handleCheckType()
+    console.log(params)
+    try {
+      const res = await api.post(TRANSACTION, params)
+      if (res) {
+        navigation.goBack();
+      }
+    } catch (error) {
+      if (error.response.status === 401) {
+        dispatch(logout())
+      }
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    // handleSubmit();
+  }, [])
 
   const showMode = () => { };
 
@@ -80,7 +105,7 @@ export default function TransactionModal({ route, navigation }) {
       <View
         style={[
           styles.flexRow,
-          { marginTop: 55, paddingBottom: 15, height: "10%" },
+          { marginTop: 35, paddingBottom: 15, height: "10%" },
         ]}
       >
         <View style={styles.wrapperTitle}>
@@ -99,12 +124,26 @@ export default function TransactionModal({ route, navigation }) {
         <ScrollView>
           <View>
             <View>
+              <View>
+                <Text style={text.textLarger}>Name</Text>
+              </View>
+              <InputPrimary
+                placeholder="Enter name of transaction"
+                customStyle={{ marginTop: 10 }}
+                value={params.name}
+                onChange={
+                  (value) => { setParams((prev) => { return { ...prev, name: value } }) }
+                }
+              />
+            </View>
+            <View style={styles.spacerStyle}></View>
+            <View>
               <Text style={text.textLarger}>Transaction Type</Text>
             </View>
             <View style={{ marginTop: 10 }}>
               <SelectList
                 data={typeList}
-                setSelected={setType}
+                setSelected={(value) => { setType(value) }}
                 dropdownStyles={{ backgroundColor: colors.white }}
                 dropdownItemStyles={{
                   marginHorizontal: 10,
@@ -133,7 +172,7 @@ export default function TransactionModal({ route, navigation }) {
           <View style={styles.spacerStyle} />
           <View>
             <View>
-              <Text style={text.textLarger}>Date</Text>
+              <Text style={text.textLarger} >Date</Text>
             </View>
             <TouchableOpacity onPress={() => setShowDatePicker(true)}>
               <InputPrimary
@@ -152,7 +191,9 @@ export default function TransactionModal({ route, navigation }) {
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
               onChange={(event, date) => {
-                setDate(date), setShowDatePicker(false);
+                setDate(date);
+                setShowDatePicker(false);
+                setParams((prev) => { return { ...prev, ["created_at"]: date.toISOString().slice(0, 10) } })
               }}
             />
           )}
@@ -165,10 +206,29 @@ export default function TransactionModal({ route, navigation }) {
             <InputPrimary
               placeholder="Enter amount"
               customStyle={{ marginTop: 10 }}
+              value={params.money + ""}
+              onChange={
+                (value) => { setParams((prev) => { return { ...prev, money: +value } }) }
+              }
             />
           </View>
-          <View style={{ marginTop: 40 }}>
-            <Button value="Save" />
+          <View style={styles.spacerStyle}></View>
+
+          <View>
+            <View>
+              <Text style={text.textLarger}>Note</Text>
+            </View>
+            <InputPrimary
+              placeholder="Enter note"
+              customStyle={{ marginTop: 10 }}
+              value={params.note}
+              onChange={
+                (value) => { setParams((prev) => { return { ...prev, note: value } }) }
+              }
+            />
+          </View>
+          <View style={{ marginTop: 30 }}>
+            <Button value="Save" onClick={handleSubmit} />
           </View>
         </ScrollView>
       </Provider>
