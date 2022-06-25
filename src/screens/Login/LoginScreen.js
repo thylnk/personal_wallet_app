@@ -4,9 +4,10 @@ import Logo from "assets/images/icon_horizontal.png";
 import { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import { useDispatch } from "react-redux";
 import Button from "~components/atoms/Button";
 import InputPrimary from "~components/atoms/InputPrimary";
-import { userAction } from "~redux/slices/user.slice";
+import { login } from "~redux/slices/user.slice";
 import { FONT_BOLD, FONT_REGULAR } from "~shared/config/fontFamily";
 import { colors } from "~shared/styles/colors";
 import { wrapperContainer } from "~shared/styles/common";
@@ -14,14 +15,15 @@ import { wrapperContainer } from "~shared/styles/common";
 const myIcon = <Icon name="eye-off-outline" size={30} color={colors.white} />;
 
 const LoginScreen = () => {
-
+  const dispatch = useDispatch();
   const [params, setParams] = useState({
     username: '',
     password: ''
   })
 
-  const handleLogin = () => { }
-
+  const handleLogin = async () => {
+    dispatch(login(params))
+  }
   return (
     <View style={styles.wrapperContainer}>
       <View style={styles.container}>

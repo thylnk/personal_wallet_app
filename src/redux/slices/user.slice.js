@@ -1,15 +1,21 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { Alert } from 'react-native';
 import authApi from '~services/auth.api';
+import { getAccessToken, setAccessToken } from '~shared/utils/storerage';
+
 
 const initialValue = {
-  accessToken: '',
+  accessToken: '' || getAccessToken(),
   isSignIn: false,
 }
 
 export const login = createAsyncThunk('user/login', async (params, thunkAPI) => {
-  // thunkAPI.dispatch(...)
-  const res = await authApi.login(params)
-  return res;
+  try {
+    const response = await authApi.login(params)
+    return response;
+  } catch (error) {
+    return thunkAPI.rejectWithValue({ message: error?.response?.data?.detail || "Error", status: error.response.status })
+  }
 });
 
 const userSlice = createSlice({
@@ -17,14 +23,26 @@ const userSlice = createSlice({
   initialState: initialValue,
   reducers: {},
   extraReducers: {
+    [login.rejected]: (state, action) => {
+      state.isSignIn = false;
+      state.accessToken = ""
+      if (action.payload.status !== 200) {
+        alert("Incorrect username or password")
+      }
+    },
+    [login.pending]: (state) => {
+      state.isSignIn = false;
+      state.accessToken = ""
+    },
     [login.fulfilled]: (state, action) => {
-      state.accessToken = action.payload;
-      state.isSignIn = true
       console.log(action.payload)
+      const { access } = action.payload
+      state.isSignIn = true;
+      state.accessToken = access;
+      setAccessToken(access);
     },
   }
 });
 
-export const { userAction } = userSlice.actions;
 const userReducer = userSlice.reducer;
 export default userReducer;

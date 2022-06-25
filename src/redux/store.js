@@ -8,7 +8,8 @@ const rootReducer = {
 
 const store = configureStore(
   {
-    reducer: rootReducer
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
   }
 )
 

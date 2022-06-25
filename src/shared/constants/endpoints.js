@@ -1,4 +1,4 @@
-const USER_LOGIN = 'users/login/'
+const USER_LOGIN = '/users/login/'
 
 export {
   USER_LOGIN

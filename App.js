@@ -1,5 +1,4 @@
 import { NavigationContainer } from '@react-navigation/native';
-// import AppLoading from 'expo-app-loading';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Provider } from 'react-redux';
