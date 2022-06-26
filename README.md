@@ -96,14 +96,23 @@ project
     <summary>View Screenshots</summary>
     <br>
 1. Login Screen
+
 ![](screenshots/login.png)
+
 2. Sign Up Screen
+
 ![](screenshots/signin.png)
+
 3. Home Screen
+
 ![](screenshots/home.png)
+
 4. Transaction Screen
+
 ![](screenshots/transaction.png)
+
 5. Money Box
+
 ![](screenshots/moneybox.png)
 
 </details>
