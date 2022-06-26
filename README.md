@@ -19,8 +19,8 @@ A mobile app to control your finances
 
 ```
 project
-│   README.md
-│
+|
+└───README.md
 │
 └───src
 │   |
@@ -37,17 +37,8 @@ project
 │   └───navigation
 │   │
 │   └───redux
-│   |   |
-│   |   └───slices
-│   |   |
-│   |   └───store.js
-|   |
 │   │
 │   └───sceens
-│   |   |
-│   |   └───slices
-│   |   |
-│   |   └───store.js
 │   │
 │   └───services
 │   │
