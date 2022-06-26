@@ -1,11 +1,48 @@
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
+import { useDispatch } from "react-redux";
 import BoxItem from "~components/molecules/MoneyBox/BoxItem";
+import { logout } from "~redux/slices/user.slice";
+import api from "~shared/config/api";
+import { SAVEMONEY } from "~shared/constants/endpoints";
 import { container, flexRow, spacing, text, wrapperContainer } from "~shared/styles/common";
+import { getAccessToken } from "~shared/utils/storerage";
 
 const PlusSquare = () => <Icon name="plussquare" size={42} />
 
 export default function MoneyBoxScreen({ navigation }) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [listSave, setListSave] = useState([]);
+  const dispatch = useDispatch();
+
+  const fetchData = async () => {
+    const access = await getAccessToken();
+    try {
+      while (isLoading) {
+        const saveList = await api.get(SAVEMONEY, {
+          headers: {
+            Authorization: `Bearer ${access}`,
+          },
+        });
+        setListSave(saveList);
+      }
+    } catch (error) {
+      console.log(error);
+      if (error.status === 401) {
+        dispatch(logout());
+      }
+    }
+  };
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetchData();
+    return () => {
+      setIsLoading(false);
+    };
+  }, []);
+
   return (
     <View style={styles.wrapperContainer}>
       {/* Top */}
@@ -20,11 +57,19 @@ export default function MoneyBoxScreen({ navigation }) {
       <ScrollView style={styles.container}>
         <View style={spacing.my25}>
           <View>
-            <TouchableOpacity onPress={() => navigation.navigate('EditMoneyBox', { action: 'edit', id: 1 })} >
-              <BoxItem />
-            </TouchableOpacity>
-            <BoxItem />
-            <BoxItem />
+            {listSave &&
+              listSave.map((item) => {
+                return (
+                  <BoxItem
+                    key={item.name + item.id}
+                    name={item.name}
+                    id={item.id}
+                    goal={item.money_goal}
+                    saving={item.saving_money}
+                    navigation={navigation}
+                  />
+                );
+              })}
           </View>
         </View>
       </ScrollView>

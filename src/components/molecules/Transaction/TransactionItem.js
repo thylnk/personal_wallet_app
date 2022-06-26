@@ -36,29 +36,6 @@ export default function TransactionItem(props) {
     }
   };
 
-  const rightSwipe = () => {
-    return (
-      <View>
-        <TouchableOpacity>
-          <View style={{ marginLeft: 10 }}>
-            <View style={styles.btnDelWrapper}>
-              <Text style={styles.textTitle}>Delete</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={{ marginRight: 10 }}>
-            <View style={styles.btnEditWrapper}>
-              <Text style={[styles.textTitle, { color: colors.white }]}>
-                Edit
-              </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
   const leftSwipe = () => {
     return (
       <View

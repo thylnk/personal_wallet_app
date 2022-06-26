@@ -22,18 +22,22 @@ import {
 } from "~shared/styles/common";
 import Button from "~components/atoms/Button";
 import InputPrimary from "~components/atoms/InputPrimary";
-import { colors } from "~shared/styles/colors";
-import { FONT_MEDIUM } from "~shared/config/fontFamily";
+import { getAccessToken } from "~shared/utils/storerage";
+import api from "~shared/config/api";
+import { SAVEMONEY } from "~shared/constants/endpoints";
+import { useDispatch } from "react-redux";
 
 export default function MoneyBoxModal({ route, navigation }) {
   const { title } = route.params;
-
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showDropDown, setShowDropDown] = useState(false);
-  const [type, setType] = useState("");
-  const [showMultiSelectDropDown, setShowMultiSelectDropDown] = useState(false);
-  const [color, setColors] = useState("");
-  const [date, setDate] = useState(new Date());
+  const dispatch = useDispatch()
+  const [type, setType] = useState("WEEK")
+  const [params, setParams] = useState({
+    "name": "",
+    "budget": "",
+    "money_goal": "",
+    "saving_money": "",
+    "daily": "WEEK"
+  })
 
   const daily = [
     {
@@ -54,7 +58,26 @@ export default function MoneyBoxModal({ route, navigation }) {
     },
   ];
 
-  const showMode = () => { };
+  const handleSubmit = async () => {
+    const access = await getAccessToken();
+    console.log(params)
+    try {
+      const res = await api.post(`${SAVEMONEY}`, JSON.stringify(params),
+        {
+          headers: {
+            "Authorization": `Bearer ${access}`
+          }
+        })
+      if (res) {
+        navigation.goBack();
+      }
+    } catch (error) {
+      if (error.status === 401) {
+        dispatch(logout())
+      }
+      console.log(error)
+    }
+  }
 
   return (
     <KeyboardAvoidingView
@@ -88,6 +111,8 @@ export default function MoneyBoxModal({ route, navigation }) {
                 <Text style={text.textLarger}>Name</Text>
               </View>
               <InputPrimary
+                value={params.name}
+                onChange={(value) => setParams((prev) => { return { ...prev, name: value } })}
                 placeholder="Enter name"
                 customStyle={{ marginTop: 5 }}
               />
@@ -98,6 +123,8 @@ export default function MoneyBoxModal({ route, navigation }) {
                 <Text style={text.textLarger}>Budget</Text>
               </View>
               <InputPrimary
+                value={params.budget}
+                onChange={(value) => setParams((prev) => { return { ...prev, budget: +value } })}
                 placeholder="Enter your budget"
                 customStyle={{ marginTop: 5 }}
               />
@@ -109,6 +136,8 @@ export default function MoneyBoxModal({ route, navigation }) {
               </View>
               <InputPrimary
                 placeholder="Enter money goal"
+                onChange={(value) => setParams((prev) => { return { ...prev, money_goal: +value } })}
+                value={params.money_goal}
                 customStyle={{ marginTop: 5 }}
               />
             </View>
@@ -119,6 +148,8 @@ export default function MoneyBoxModal({ route, navigation }) {
               </View>
               <InputPrimary
                 placeholder="Enter saving money"
+                value={params.saving_money}
+                onChange={(value) => setParams((prev) => { return { ...prev, saving_money: +value } })}
                 customStyle={{ marginTop: 5 }}
               />
             </View>
@@ -127,37 +158,15 @@ export default function MoneyBoxModal({ route, navigation }) {
               <Text style={text.textLarger}>Repeated Time</Text>
             </View>
             <View style={{ marginTop: 5 }}>
-              <SelectList
-                data={daily}
-                setSelected={setType}
-                dropdownStyles={{ backgroundColor: colors.white }}
-                dropdownItemStyles={{
-                  marginHorizontal: 10,
-                  borderBottomWidth: 0.3,
-                  paddingBottom: 10,
-                  borderBottomColor: colors.lightDark,
-                }}
-                dropdownTextStyles={{
-                  color: colors.black,
-                  ...FONT_MEDIUM,
-                  fontSize: 18,
-                }}
-                boxStyles={{
-                  backgroundColor: colors.secondaryColor,
-                  borderRadius: 15,
-                  paddingVertical: 14,
-                }}
-                inputStyles={{
-                  color: colors.white,
-                  ...FONT_MEDIUM,
-                  fontSize: 18,
-                }}
+              <InputPrimary
+                value="Weekly"
+                customStyle={{ marginTop: 5 }}
               />
             </View>
           </View>
           <View style={styles.spacerStyle} />
-          <View style={{ marginTop: 35 }}>
-            <Button value="Save" />
+          <View style={{ marginTop: 25 }}>
+            <Button value="Save" onClick={handleSubmit} />
           </View>
         </ScrollView>
       </Provider>

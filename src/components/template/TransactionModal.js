@@ -39,7 +39,7 @@ export default function TransactionModal({ route, navigation }) {
   const [params, setParams] = useState(
     {
       "name": "",
-      "money": 0,
+      "money": "",
       "type": 1,
       "status": "PENDING",
       "note": "",
