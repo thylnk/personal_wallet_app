@@ -27,12 +27,13 @@ import { FONT_MEDIUM } from "~shared/config/fontFamily";
 import { useDispatch } from "react-redux";
 import api from "~shared/config/api";
 import { TRANSACTION } from "~shared/constants/endpoints";
+import { getAccessToken } from "~shared/utils/storerage";
 
 export default function TransactionModal({ route, navigation }) {
   const dispatch = useDispatch()
-  const { title } = route.params;
+  const { title, action, id } = route.params;
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [type, setType] = useState("");
+  const [type, setType] = useState("Eating/Drinking");
   const [color, setColors] = useState("");
   const [date, setDate] = useState(new Date());
   const [params, setParams] = useState(
@@ -40,7 +41,7 @@ export default function TransactionModal({ route, navigation }) {
       "name": "",
       "money": 0,
       "type": 1,
-      "status": "COMPLETED",
+      "status": "PENDING",
       "note": "",
       "currency_unit": "VND",
       "created_at": new Date().toISOString().slice(0, 10),
@@ -74,16 +75,71 @@ export default function TransactionModal({ route, navigation }) {
     }
   }
 
+  const handleGetTypeValue = (type) => {
+    const current = typeList.find((item) => item.label == type)
+    setType(current.value);
+  }
+
   const handleSubmit = async () => {
     handleCheckType()
+    const access = await getAccessToken();
     console.log(params)
     try {
-      const res = await api.post(TRANSACTION, params)
-      if (res) {
-        navigation.goBack();
+      if (action === 'edit') {
+        const res = await api.put(`${TRANSACTION}${id}/`, JSON.stringify(params),
+          {
+            headers: {
+              "Authorization": `Bearer ${access}`
+            }
+          })
+        if (res) {
+          navigation.goBack();
+        }
+      } else {
+        const res = await api.post(TRANSACTION, JSON.stringify(params),
+          {
+            headers: {
+              "Authorization": `Bearer ${access}`
+            }
+          })
+        if (res) {
+          navigation.goBack();
+        }
       }
     } catch (error) {
-      if (error.response.status === 401) {
+      if (error.status === 401) {
+        dispatch(logout())
+      }
+      console.log(error)
+    }
+  }
+
+  const fetchData = async () => {
+    const access = await getAccessToken();
+    console.log(params)
+    try {
+      const res = await api.get(`${TRANSACTION}${id}/`,
+        {
+          headers: {
+            "Authorization": `Bearer ${access}`
+          }
+        })
+      if (res) {
+        setParams({
+          "name": res.name,
+          "money": res.money,
+          "type": res.type,
+          "status": res.status,
+          "note": res.note,
+          "currency_unit": res.currency_unit,
+          "created_at": res.created_at.slice(0, 10),
+          "note": res.note
+        })
+
+        handleGetTypeValue(res.type)
+      }
+    } catch (error) {
+      if (error.status === 401) {
         dispatch(logout())
       }
       console.log(error)
@@ -91,10 +147,10 @@ export default function TransactionModal({ route, navigation }) {
   }
 
   useEffect(() => {
-    // handleSubmit();
+    if (action === 'edit') {
+      fetchData();
+    }
   }, [])
-
-  const showMode = () => { };
 
   return (
     <KeyboardAvoidingView
@@ -143,7 +199,9 @@ export default function TransactionModal({ route, navigation }) {
             <View style={{ marginTop: 10 }}>
               <SelectList
                 data={typeList}
-                setSelected={(value) => { setType(value) }}
+                // placeholder="Income"
+                placeholder={type}
+                setSelected={(value) => { setType(params.type) }}
                 dropdownStyles={{ backgroundColor: colors.white }}
                 dropdownItemStyles={{
                   marginHorizontal: 10,

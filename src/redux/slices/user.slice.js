@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { Alert } from 'react-native';
 import authApi from '~services/auth.api';
 import { getAccessToken, setAccessToken } from '~shared/utils/storerage';
 
@@ -12,10 +11,12 @@ const initialValue = {
 export const login = createAsyncThunk('user/login', async (params, thunkAPI) => {
   try {
     const response = await authApi.login(params);
+    await setAccessToken(response.access);
+
     return response;
   } catch (error) {
-    console.log(error)
-    return thunkAPI.rejectWithValue(error.response.status)
+    console.log(error);
+    return thunkAPI.rejectWithValue(error.status);
   }
 });
 
@@ -32,8 +33,8 @@ const userSlice = createSlice({
     [login.rejected]: (state, action) => {
       state.isSignIn = false;
       state.accessToken = ""
-      if (action.payload) {
-        console.log(action.payload)
+      if (action.payload !== 200) {
+        alert("Email or password is incorrect!")
       }
     },
     [login.pending]: (state) => {
@@ -45,8 +46,6 @@ const userSlice = createSlice({
       const { access } = action.payload
       state.isSignIn = true;
       state.accessToken = access;
-      setAccessToken(access);
-      console.log(access);
     },
   }
 });

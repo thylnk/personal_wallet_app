@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const setAccessToken = async (value) => {
   try {
-    // const jsonValue = JSON.stringify(value)
     await AsyncStorage.setItem('access', value)
   } catch (e) {
     console.log("setAccess Error: ", e)

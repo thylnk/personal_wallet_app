@@ -21,9 +21,10 @@ const LoginScreen = () => {
     password: ''
   })
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     dispatch(login(params))
   }
+
   return (
     <View style={styles.wrapperContainer}>
       <View style={styles.container}>

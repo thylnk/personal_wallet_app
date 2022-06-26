@@ -8,7 +8,7 @@ import TransactionItem from "~components/molecules/Transaction/TransactionItem";
 import { logout } from "~redux/slices/user.slice";
 import api from "~shared/config/api";
 import { FONT_BOLD, FONT_MEDIUM, FONT_REGULAR } from "~shared/config/fontFamily";
-import { TRANSACTION } from "~shared/constants/endpoints";
+import { TRANSACTION, USER } from "~shared/constants/endpoints";
 import { colors } from "~shared/styles/colors";
 import { container, flexRow, spacing, text, wrapperContainer } from "~shared/styles/common";
 import { getAccessToken } from "~shared/utils/storerage";
@@ -18,26 +18,44 @@ const Logout = () => <Icon name="logout" size={42} />
 export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
   const [listTrans, setListTrans] = useState([]);
+  const [listSave, setListSave] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState({
+    "id": 1,
+    "avatar": "",
+    "full_name": "",
+    "address": "DN",
+    "total_money": "",
+    "currency_unit": "VND"
+  })
 
   const fetchAllTrans = async () => {
     const access = await getAccessToken();
     try {
-      const res = await api.get(TRANSACTION, {
-        headers: {
-          Authorization: 'Bearer ' + access
-        } //the token is a variable which holds the token
-      });
-      setListTrans(res);
+      while (isLoading) {
+        const data = await api.get(USER, {
+          headers: {
+            "Authorization": `Bearer ${access}`
+          }
+        });
+        setUser(data)
+        const res = await api.get(TRANSACTION, {
+          headers: {
+            "Authorization": `Bearer ${access}`
+          }
+        });
+        setListTrans(res);
+      }
     } catch (error) {
       console.log(error)
-      if (error.response.status === 401) {
+      if (error.status === 401) {
         dispatch(logout())
       }
     }
   }
 
   useEffect(() => {
-    fetchAllTrans()
+    fetchAllTrans();
   }, []);
 
   return (
@@ -45,7 +63,7 @@ export default function HomeScreen({ navigation }) {
       {/* Top */}
       <View style={[styles.flexRow, { paddingHorizontal: 35, marginTop: 55, paddingBottom: 15 }]}>
         <View style={styles.wrapperTitle}>
-          <Text style={styles.textUser} numberOfLines={1} ellipsizeMode='tail'>Hi Thy Le Ngoc Khanh</Text>
+          <Text style={styles.textUser} numberOfLines={1} ellipsizeMode='tail'>Hi {user.full_name}</Text>
           <Text style={styles.textTitle}>Welcome,</Text>
         </View>
         <View>
@@ -59,7 +77,7 @@ export default function HomeScreen({ navigation }) {
           <View><Text style={styles.textWhite}>Total Balance</Text></View>
           <View style={styles.totalContainer}>
             <Text style={[styles.textTotal, { paddingRight: 6 }]}>VND</Text>
-            <Text style={styles.textTotal}>300.0000.000</Text>
+            <Text style={styles.textTotal}>{user.total_money}</Text>
           </View>
         </View>
 
@@ -72,7 +90,7 @@ export default function HomeScreen({ navigation }) {
           <View>
             {
               listTrans?.map((item, index) => {
-                return <TransactionItem type={+item.type_id} money={item.money} key={item.created_at} />
+                return <TransactionItem type={+item.type_id} money={item.money} key={item.created_at + item.id + item.name} id={item.id} navigation={navigation} />
               })
             }
           </View>

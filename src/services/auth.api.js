@@ -5,9 +5,6 @@ const authApi = {
   login: (data) => {
     return api.post(USER_LOGIN, JSON.stringify(data))
   },
-  // getUser: (config) => {
-  //   return api.get(USER, config)
-  // }
 }
 
 export default authApi;
