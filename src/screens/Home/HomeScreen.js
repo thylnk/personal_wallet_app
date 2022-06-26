@@ -66,7 +66,10 @@ export default function HomeScreen({ navigation }) {
             Authorization: `Bearer ${access}`,
           },
         });
-        setListSave(saveList);
+        if (saveList) {
+          setListSave(saveList.box_money)
+        }
+        // setListSave(saveList || []);
       }
     } catch (error) {
       console.log(error);
@@ -128,6 +131,7 @@ export default function HomeScreen({ navigation }) {
           </View>
           <View>
             {listTrans?.map((item, index) => {
+              if (index > 2) return;
               return (
                 <TransactionItem
                   type={+item.type_id}

@@ -25,7 +25,7 @@ export default function MoneyBoxScreen({ navigation }) {
             Authorization: `Bearer ${access}`,
           },
         });
-        setListSave(saveList);
+        setListSave(saveList.box_money);
       }
     } catch (error) {
       console.log(error);

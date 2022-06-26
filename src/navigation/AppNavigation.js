@@ -49,7 +49,7 @@ export default function AppNavigation() {
   const isSigned = useSelector((state) => state.user.isSignIn)
   return (
     <Stack.Navigator
-      initialRouteName={isSigned ? "Login" : "MainScreen"}
+      initialRouteName={isSigned ? "SignIn" : "MainScreen"}
       screenOptions={{
         headerShown: false,
       }}

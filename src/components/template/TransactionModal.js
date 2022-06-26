@@ -33,7 +33,7 @@ export default function TransactionModal({ route, navigation }) {
   const dispatch = useDispatch()
   const { title, action, id } = route.params;
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [type, setType] = useState("Eating/Drinking");
+  const [type, setType] = useState("");
   const [color, setColors] = useState("");
   const [date, setDate] = useState(new Date());
   const [params, setParams] = useState(
@@ -41,7 +41,7 @@ export default function TransactionModal({ route, navigation }) {
       "name": "",
       "money": "",
       "type": 1,
-      "status": "PENDING",
+      "status": "COMPLETED",
       "note": "",
       "currency_unit": "VND",
       "created_at": new Date().toISOString().slice(0, 10),
@@ -70,22 +70,22 @@ export default function TransactionModal({ route, navigation }) {
 
   const handleCheckType = () => {
     const currentType = typeList.find((item) => item.value == type)
-    if (currentType) {
-      setParams((prev) => { return { ...prev, type: currentType.label } })
-    }
+    return currentType.value
   }
 
-  const handleGetTypeValue = (type) => {
-    const current = typeList.find((item) => item.label == type)
+  const handleGetTypeValue = () => {
+    const current = typeList.find((item) => item.label == params.type)
     setType(current.value);
   }
 
   const handleSubmit = async () => {
-    handleCheckType()
     const access = await getAccessToken();
-    console.log(params)
+    console.log(action)
     try {
+      const value = handleCheckType()
+      setParams((prev) => { return { ...prev, type: value } })
       if (action === 'edit') {
+        // console.log(params)
         const res = await api.put(`${TRANSACTION}${id}/`, JSON.stringify(params),
           {
             headers: {
@@ -116,7 +116,6 @@ export default function TransactionModal({ route, navigation }) {
 
   const fetchData = async () => {
     const access = await getAccessToken();
-    console.log(params)
     try {
       const res = await api.get(`${TRANSACTION}${id}/`,
         {
@@ -201,7 +200,7 @@ export default function TransactionModal({ route, navigation }) {
                 data={typeList}
                 // placeholder="Income"
                 placeholder={type}
-                setSelected={(value) => { setType(params.type) }}
+                setSelected={(value) => { setType(value) }}
                 dropdownStyles={{ backgroundColor: colors.white }}
                 dropdownItemStyles={{
                   marginHorizontal: 10,
@@ -260,7 +259,6 @@ export default function TransactionModal({ route, navigation }) {
             <View>
               <Text style={text.textLarger}>Amount</Text>
             </View>
-            {/* <TextInput keyboardType="numeric" placeholder="200" /> */}
             <InputPrimary
               placeholder="Enter amount"
               customStyle={{ marginTop: 10 }}

@@ -19,7 +19,7 @@ export default function TransactionScreen({ navigation }) {
   const fetchAllTrans = async () => {
     const access = await getAccessToken();
     try {
-      while (true) {
+      while (isLoading) {
         const res = await api.get(TRANSACTION, {
           headers: {
             Authorization: 'Bearer ' + access
@@ -36,8 +36,11 @@ export default function TransactionScreen({ navigation }) {
   }
 
   useEffect(() => {
+    setIsLoading(true)
     fetchAllTrans();
-
+    return () => {
+      setIsLoading(false)
+    }
   }, []);
 
   return (
@@ -56,7 +59,7 @@ export default function TransactionScreen({ navigation }) {
           <View>
             {
               listTrans?.map((item) => {
-                return <TransactionItem type={+item.type_id} money={item.money} key={item.type_id + item.name} setIsLoading={setIsLoading} id={item.id} navigation={navigation} />
+                return <TransactionItem type={+item.type_id} money={item.money} key={item.id + item.name} setIsLoading={setIsLoading} id={item.id} navigation={navigation} />
               })
             }
           </View>

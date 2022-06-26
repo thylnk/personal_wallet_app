@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
-import { StyleSheet, TextInput, View } from 'react-native'
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
 import { colors } from '~shared/styles/colors'
 import { FONT_REGULAR } from '~shared/config/fontFamily'
+import { useState } from 'react'
 
 const InputPrimary = (props) => {
   const {
@@ -15,6 +16,8 @@ const InputPrimary = (props) => {
     editable
   } = props
 
+  const [isShow, setIsShow] = useState(secureTextEntry);
+
   return (
     <View style={[styles.container, customStyle]}>
       <TextInput
@@ -23,9 +26,11 @@ const InputPrimary = (props) => {
         value={value}
         onChangeText={onChange}
         placeholderTextColor={colors.white}
-        secureTextEntry={secureTextEntry}
+        secureTextEntry={isShow}
         editable={editable}></TextInput>
-      <View style={styles.icon}>{icon}</View>
+      <TouchableOpacity onPress={() => setIsShow(!isShow)}>
+        <View style={styles.icon}>{icon}</View>
+      </TouchableOpacity>
     </View>
   )
 }
