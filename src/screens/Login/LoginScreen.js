@@ -21,9 +21,10 @@ const LoginScreen = () => {
     password: ''
   })
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     dispatch(login(params))
   }
+
   return (
     <View style={styles.wrapperContainer}>
       <View style={styles.container}>
@@ -48,15 +49,15 @@ const LoginScreen = () => {
           }}
         />
 
-        <View style={{ marginTop: 35 }}>
+        <View style={{ marginTop: 25 }}>
           <Button value="Sign up" onClick={handleLogin} />
         </View>
 
-        <View style={{ marginVertical: 10 }}>
+        <View style={{ marginVertical: 20 }}>
           <Text style={[styles.text, FONT_BOLD]}>OR</Text>
         </View>
 
-        <View>
+        {/* <View>
           <Button
             value="Sign in with Google"
             icon={<Google />}
@@ -66,7 +67,7 @@ const LoginScreen = () => {
               textColor: colors.lightDark,
             }}
           />
-        </View>
+        </View> */}
 
         <View style={styles.wrapperCenter}>
           <Text style={styles.text}>
@@ -98,13 +99,13 @@ const styles = StyleSheet.create({
   text: {
     color: colors.black,
     fontSize: 18,
-    paddingVertical: 14,
+    // paddingVertical: 14,
     textAlign: "center",
     ...FONT_REGULAR,
   },
   wrapperCenter: {
     alignItems: "center",
-    marginTop: 35,
+    // marginTop: 35,
   },
 });
 

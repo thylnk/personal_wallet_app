@@ -14,29 +14,35 @@ export default function TransactionScreen({ navigation }) {
 
   const dispatch = useDispatch();
   const [listTrans, setListTrans] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchAllTrans = async () => {
     const access = await getAccessToken();
-    console.log(access)
     try {
-      const res = await api.get(TRANSACTION, {
-        headers: {
-          Authorization: 'Bearer ' + access
-        }
-      });
-      setListTrans(res);
-      console.log(res)
+      while (isLoading) {
+        const res = await api.get(TRANSACTION, {
+          headers: {
+            Authorization: 'Bearer ' + access
+          }
+        });
+        setListTrans(res);
+      }
     } catch (error) {
       console.log(error)
-      // if (error.response.status === 401) {
-      //   dispatch(logout())
-      // }
+      if (error.response.status === 401) {
+        dispatch(logout())
+      }
     }
   }
 
   useEffect(() => {
-    fetchAllTrans()
+    setIsLoading(true)
+    fetchAllTrans();
+    return () => {
+      setIsLoading(false)
+    }
   }, []);
+
   return (
     <View style={styles.wrapperContainer}>
       {/* Top */}
@@ -51,17 +57,9 @@ export default function TransactionScreen({ navigation }) {
       <ScrollView style={styles.container}>
         <View style={spacing.my25}>
           <View>
-            {/* <TouchableOpacity onPress={() => navigation.navigate('ModalScreen', { title: 'Edit Transaction', action: 'edit', id: 1 })} >
-              <TransactionItem />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('ModalScreen', { title: 'Edit Transaction', action: 'edit', id: 1 })} >
-              <TransactionItem />
-            </TouchableOpacity> */}
-
             {
-              listTrans && listTrans.map((item) => {
-                // console.log(item.type)
-                return <TransactionItem type={+item.type_id} money={item.money} key={item.type_id + item.name} />
+              listTrans?.map((item) => {
+                return <TransactionItem type={+item.type_id} money={item.money} key={item.id + item.name} setIsLoading={setIsLoading} id={item.id} navigation={navigation} />
               })
             }
           </View>

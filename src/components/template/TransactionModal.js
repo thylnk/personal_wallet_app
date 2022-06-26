@@ -27,10 +27,11 @@ import { FONT_MEDIUM } from "~shared/config/fontFamily";
 import { useDispatch } from "react-redux";
 import api from "~shared/config/api";
 import { TRANSACTION } from "~shared/constants/endpoints";
+import { getAccessToken } from "~shared/utils/storerage";
 
 export default function TransactionModal({ route, navigation }) {
   const dispatch = useDispatch()
-  const { title } = route.params;
+  const { title, action, id } = route.params;
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [type, setType] = useState("");
   const [color, setColors] = useState("");
@@ -38,7 +39,7 @@ export default function TransactionModal({ route, navigation }) {
   const [params, setParams] = useState(
     {
       "name": "",
-      "money": 0,
+      "money": "",
       "type": 1,
       "status": "COMPLETED",
       "note": "",
@@ -69,21 +70,75 @@ export default function TransactionModal({ route, navigation }) {
 
   const handleCheckType = () => {
     const currentType = typeList.find((item) => item.value == type)
-    if (currentType) {
-      setParams((prev) => { return { ...prev, type: currentType.label } })
-    }
+    return currentType.value
+  }
+
+  const handleGetTypeValue = () => {
+    const current = typeList.find((item) => item.label == params.type)
+    setType(current.value);
   }
 
   const handleSubmit = async () => {
-    handleCheckType()
-    console.log(params)
+    const access = await getAccessToken();
+    console.log(action)
     try {
-      const res = await api.post(TRANSACTION, params)
-      if (res) {
-        navigation.goBack();
+      const value = handleCheckType()
+      setParams((prev) => { return { ...prev, type: value } })
+      if (action === 'edit') {
+        // console.log(params)
+        const res = await api.put(`${TRANSACTION}${id}/`, JSON.stringify(params),
+          {
+            headers: {
+              "Authorization": `Bearer ${access}`
+            }
+          })
+        if (res) {
+          navigation.goBack();
+        }
+      } else {
+        const res = await api.post(TRANSACTION, JSON.stringify(params),
+          {
+            headers: {
+              "Authorization": `Bearer ${access}`
+            }
+          })
+        if (res) {
+          navigation.goBack();
+        }
       }
     } catch (error) {
-      if (error.response.status === 401) {
+      if (error.status === 401) {
+        dispatch(logout())
+      }
+      console.log(error)
+    }
+  }
+
+  const fetchData = async () => {
+    const access = await getAccessToken();
+    try {
+      const res = await api.get(`${TRANSACTION}${id}/`,
+        {
+          headers: {
+            "Authorization": `Bearer ${access}`
+          }
+        })
+      if (res) {
+        setParams({
+          "name": res.name,
+          "money": res.money,
+          "type": res.type,
+          "status": res.status,
+          "note": res.note,
+          "currency_unit": res.currency_unit,
+          "created_at": res.created_at.slice(0, 10),
+          "note": res.note
+        })
+
+        handleGetTypeValue(res.type)
+      }
+    } catch (error) {
+      if (error.status === 401) {
         dispatch(logout())
       }
       console.log(error)
@@ -91,10 +146,10 @@ export default function TransactionModal({ route, navigation }) {
   }
 
   useEffect(() => {
-    // handleSubmit();
+    if (action === 'edit') {
+      fetchData();
+    }
   }, [])
-
-  const showMode = () => { };
 
   return (
     <KeyboardAvoidingView
@@ -143,6 +198,8 @@ export default function TransactionModal({ route, navigation }) {
             <View style={{ marginTop: 10 }}>
               <SelectList
                 data={typeList}
+                // placeholder="Income"
+                placeholder={type}
                 setSelected={(value) => { setType(value) }}
                 dropdownStyles={{ backgroundColor: colors.white }}
                 dropdownItemStyles={{
@@ -202,7 +259,6 @@ export default function TransactionModal({ route, navigation }) {
             <View>
               <Text style={text.textLarger}>Amount</Text>
             </View>
-            {/* <TextInput keyboardType="numeric" placeholder="200" /> */}
             <InputPrimary
               placeholder="Enter amount"
               customStyle={{ marginTop: 10 }}

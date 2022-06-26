@@ -22,7 +22,7 @@ api.interceptors.response.use((response) => {
   }
   return response;
 }, (error) => {
-  throw error;
+  throw error.response;
 });
 
 export default api;
