@@ -96,12 +96,16 @@ project
     <summary>View Screenshots</summary>
     <br>
 1. Login Screen
-<!-- ![](screenshots/intro1.png) -->
-2. Main Screen
-<!-- ![](screenshots/intro1.png) -->
-3. Transaction Screen
-<!-- ![](screenshots/intro1.png) -->
-4. Detail Screen
+![](screenshots/login.png)
+2. Sign Up Screen
+![](screenshots/signin.png)
+3. Home Screen
+![](screenshots/home.png)
+4. Transaction Screen
+![](screenshots/transaction.png)
+5. Money Box
+![](screenshots/moneybox.png)
+
 </details>
 
 ## Todo

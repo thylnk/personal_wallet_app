@@ -38,14 +38,14 @@ export default function TransactionModal({ route, navigation }) {
   const [date, setDate] = useState(new Date());
   const [params, setParams] = useState(
     {
-      "name": "",
-      "money": "",
-      "type": 1,
-      "status": "COMPLETED",
-      "note": "",
-      "currency_unit": "VND",
-      "created_at": new Date().toISOString().slice(0, 10),
-      "note": ""
+      name: "",
+      money: "",
+      type: "",
+      status: "COMPLETED",
+      note: "",
+      currency_unit: "VND",
+      created_at: new Date().toISOString().slice(0, 10),
+      note: ""
     }
   )
 
@@ -70,22 +70,22 @@ export default function TransactionModal({ route, navigation }) {
 
   const handleCheckType = () => {
     const currentType = typeList.find((item) => item.value == type)
-    return currentType.value
+    console.log(type)
+    if (currentType) {
+      setParams((prev) => { return { ...prev, type: currentType.label } })
+    }
   }
 
-  const handleGetTypeValue = () => {
-    const current = typeList.find((item) => item.label == params.type)
+  const handleGetTypeValue = (value) => {
+    const current = typeList.find((item) => item.label == value)
     setType(current.value);
   }
 
   const handleSubmit = async () => {
     const access = await getAccessToken();
-    console.log(action)
     try {
-      const value = handleCheckType()
-      setParams((prev) => { return { ...prev, type: value } })
+      handleCheckType()
       if (action === 'edit') {
-        // console.log(params)
         const res = await api.put(`${TRANSACTION}${id}/`, JSON.stringify(params),
           {
             headers: {
@@ -96,6 +96,7 @@ export default function TransactionModal({ route, navigation }) {
           navigation.goBack();
         }
       } else {
+        console.log(params)
         const res = await api.post(TRANSACTION, JSON.stringify(params),
           {
             headers: {
@@ -124,6 +125,7 @@ export default function TransactionModal({ route, navigation }) {
           }
         })
       if (res) {
+        handleGetTypeValue(res.type)
         setParams({
           "name": res.name,
           "money": res.money,
@@ -135,7 +137,7 @@ export default function TransactionModal({ route, navigation }) {
           "note": res.note
         })
 
-        handleGetTypeValue(res.type)
+
       }
     } catch (error) {
       if (error.status === 401) {

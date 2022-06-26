@@ -25,7 +25,7 @@ const SignUpScreen = ({ navigation }) => {
     username: "",
     password: "",
     avatar: "hehe",
-    full_name: "",
+    full_name: "Khanh Thy",
     email: "",
     address: "DN",
     total_money: 0,
@@ -35,11 +35,13 @@ const SignUpScreen = ({ navigation }) => {
     try {
       const res = await api.post('users/register/', JSON.stringify(user))
       if (res) {
-        await alert("Account has been successfully registered!");
+        // alert("Account has been successfully registered!");
         navigation.navigate('SignIn')
       }
     } catch (error) {
-      alert(error.data?.message)
+      if (error.data) {
+        alert(error.data.message)
+      }
     }
   }
 
