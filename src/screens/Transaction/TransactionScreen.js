@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useState, useEffect, useCallback } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useDispatch } from "react-redux";
@@ -19,7 +20,7 @@ export default function TransactionScreen({ navigation }) {
   const fetchAllTrans = async () => {
     const access = await getAccessToken();
     try {
-      while (isLoading) {
+      while (true) {
         const res = await api.get(TRANSACTION, {
           headers: {
             Authorization: 'Bearer ' + access
@@ -35,13 +36,15 @@ export default function TransactionScreen({ navigation }) {
     }
   }
 
-  useEffect(() => {
-    setIsLoading(true)
-    fetchAllTrans();
-    return () => {
-      setIsLoading(false)
-    }
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      setIsLoading(true)
+      fetchAllTrans();
+      return () => {
+        setIsLoading(false)
+      }
+    }, [isLoading])
+  );
 
   return (
     <View style={styles.wrapperContainer}>

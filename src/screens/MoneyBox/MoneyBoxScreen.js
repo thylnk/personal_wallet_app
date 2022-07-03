@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useDispatch } from "react-redux";
@@ -35,13 +36,15 @@ export default function MoneyBoxScreen({ navigation }) {
     }
   };
 
-  useEffect(() => {
-    setIsLoading(true);
-    fetchData();
-    return () => {
-      setIsLoading(false);
-    };
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      setIsLoading(true);
+      fetchData();
+      return () => {
+        setIsLoading(false);
+      }
+    }, [isLoading])
+  );
 
   return (
     <View style={styles.wrapperContainer}>

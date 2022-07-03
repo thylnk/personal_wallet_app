@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -48,7 +49,7 @@ export default function HomeScreen({ navigation }) {
   const fetchAllTrans = async () => {
     const access = await getAccessToken();
     try {
-      while (isLoading) {
+      while (true) {
         const data = await api.get(USER, {
           headers: {
             Authorization: `Bearer ${access}`,
@@ -69,7 +70,6 @@ export default function HomeScreen({ navigation }) {
         if (saveList) {
           setListSave(saveList.box_money)
         }
-        // setListSave(saveList || []);
       }
     } catch (error) {
       console.log(error);
@@ -79,13 +79,14 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
-  useEffect(() => {
-    setIsLoading(true);
-    fetchAllTrans();
-    return () => {
-      setIsLoading(false);
-    };
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchAllTrans();
+      return () => {
+        setIsLoading(false);
+      };
+    }, [isLoading]),
+  );
 
   return (
     <View style={styles.wrapperContainer}>
@@ -103,7 +104,7 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.textTitle}>Welcome,</Text>
         </View>
         <View>
-          <TouchableOpacity onPress={() => dispatch(logout())}>
+          <TouchableOpacity onPress={() => { setIsLoading(false); dispatch(logout()) }}>
             <Logout />
           </TouchableOpacity>
         </View>
@@ -139,6 +140,7 @@ export default function HomeScreen({ navigation }) {
                   key={item.created_at + item.id + item.name}
                   id={item.id}
                   navigation={navigation}
+
                 />
               );
             })}

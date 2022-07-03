@@ -25,7 +25,7 @@ const SignUpScreen = ({ navigation }) => {
     username: "",
     password: "",
     avatar: "hehe",
-    full_name: "Khanh Thy",
+    full_name: "",
     email: "",
     address: "DN",
     total_money: 0,
@@ -35,7 +35,7 @@ const SignUpScreen = ({ navigation }) => {
     try {
       const res = await api.post('users/register/', JSON.stringify(user))
       if (res) {
-        // alert("Account has been successfully registered!");
+        alert("Account has been successfully registered!");
         navigation.navigate('SignIn')
       }
     } catch (error) {
@@ -50,7 +50,7 @@ const SignUpScreen = ({ navigation }) => {
       <View style={styles.container}>
         <Image source={Logo} style={styles.image} />
         <ScrollView>
-          {/* <InputPrimary
+          <InputPrimary
             placeholder="Enter full name"
             customStyle={{ marginTop: 20 }}
             onChange={(value) =>
@@ -59,7 +59,7 @@ const SignUpScreen = ({ navigation }) => {
               })
             }
             value={user.full_name}
-          /> */}
+          />
           <InputPrimary
             placeholder="Enter email"
             customStyle={{ marginTop: 20 }}

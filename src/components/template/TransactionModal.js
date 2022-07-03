@@ -30,24 +30,22 @@ import { TRANSACTION } from "~shared/constants/endpoints";
 import { getAccessToken } from "~shared/utils/storerage";
 
 export default function TransactionModal({ route, navigation }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { title, action, id } = route.params;
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [type, setType] = useState("");
   const [color, setColors] = useState("");
   const [date, setDate] = useState(new Date());
-  const [params, setParams] = useState(
-    {
-      name: "",
-      money: "",
-      type: "",
-      status: "COMPLETED",
-      note: "",
-      currency_unit: "VND",
-      created_at: new Date().toISOString().slice(0, 10),
-      note: ""
-    }
-  )
+  const [params, setParams] = useState({
+    name: "",
+    money: "",
+    type: 1,
+    status: "COMPLETED",
+    note: "",
+    currency_unit: "VND",
+    created_at: new Date().toISOString().slice(0, 10),
+    note: "",
+  });
 
   const typeList = [
     {
@@ -69,89 +67,87 @@ export default function TransactionModal({ route, navigation }) {
   ];
 
   const handleCheckType = () => {
-    const currentType = typeList.find((item) => item.value == type)
-    console.log(type)
-    if (currentType) {
-      setParams((prev) => { return { ...prev, type: currentType.label } })
-    }
-  }
+    const currentType = typeList.find((item) => item.value == type);
+    if (currentType)
+      setParams((prev) => ({ ...prev, type: currentType.label }));
+  };
 
   const handleGetTypeValue = (value) => {
-    const current = typeList.find((item) => item.label == value)
+    const current = typeList.find((item) => item.label == value);
     setType(current.value);
-  }
+  };
 
   const handleSubmit = async () => {
     const access = await getAccessToken();
+    handleCheckType(type);
     try {
-      handleCheckType()
-      if (action === 'edit') {
-        const res = await api.put(`${TRANSACTION}${id}/`, JSON.stringify(params),
+      if (action === "edit") {
+        const res = await api.put(
+          `${TRANSACTION}${id}/`,
+          JSON.stringify(params),
           {
             headers: {
-              "Authorization": `Bearer ${access}`
-            }
-          })
+              Authorization: `Bearer ${access}`,
+            },
+          }
+        );
         if (res) {
           navigation.goBack();
         }
       } else {
-        console.log(params)
-        const res = await api.post(TRANSACTION, JSON.stringify(params),
-          {
-            headers: {
-              "Authorization": `Bearer ${access}`
-            }
-          })
+        console.log(params);
+
+        const res = await api.post(TRANSACTION, JSON.stringify(params), {
+          headers: {
+            Authorization: `Bearer ${access}`,
+          },
+        });
         if (res) {
           navigation.goBack();
         }
       }
     } catch (error) {
       if (error.status === 401) {
-        dispatch(logout())
+        dispatch(logout());
       }
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const fetchData = async () => {
     const access = await getAccessToken();
     try {
-      const res = await api.get(`${TRANSACTION}${id}/`,
-        {
-          headers: {
-            "Authorization": `Bearer ${access}`
-          }
-        })
+      const res = await api.get(`${TRANSACTION}${id}/`, {
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      });
       if (res) {
-        handleGetTypeValue(res.type)
+        handleGetTypeValue(res.type);
         setParams({
-          "name": res.name,
-          "money": res.money,
-          "type": res.type,
-          "status": res.status,
-          "note": res.note,
-          "currency_unit": res.currency_unit,
-          "created_at": res.created_at.slice(0, 10),
-          "note": res.note
-        })
-
-
+          name: res.name,
+          money: res.money,
+          type: res.type,
+          status: res.status,
+          note: res.note,
+          currency_unit: res.currency_unit,
+          created_at: res.created_at.slice(0, 10),
+          note: res.note,
+        });
       }
     } catch (error) {
       if (error.status === 401) {
-        dispatch(logout())
+        dispatch(logout());
       }
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
-    if (action === 'edit') {
+    if (action === "edit") {
       fetchData();
     }
-  }, [])
+  }, []);
 
   return (
     <KeyboardAvoidingView
@@ -167,13 +163,15 @@ export default function TransactionModal({ route, navigation }) {
       >
         <View style={styles.wrapperTitle}>
           <TouchableOpacity
-            style={{ width: '8%' }}
+            style={{ width: "8%" }}
             onPress={() => navigation.goBack()}
           >
             <Back />
           </TouchableOpacity>
-          <View style={{ width: '90%' }}>
-            <Text style={[text.textHeading, { textAlign: 'center' }]}>{title}</Text>
+          <View style={{ width: "90%" }}>
+            <Text style={[text.textHeading, { textAlign: "center" }]}>
+              {title}
+            </Text>
           </View>
         </View>
       </View>
@@ -188,9 +186,11 @@ export default function TransactionModal({ route, navigation }) {
                 placeholder="Enter name of transaction"
                 customStyle={{ marginTop: 10 }}
                 value={params.name}
-                onChange={
-                  (value) => { setParams((prev) => { return { ...prev, name: value } }) }
-                }
+                onChange={(value) => {
+                  setParams((prev) => {
+                    return { ...prev, name: value };
+                  });
+                }}
               />
             </View>
             <View style={styles.spacerStyle}></View>
@@ -202,7 +202,10 @@ export default function TransactionModal({ route, navigation }) {
                 data={typeList}
                 // placeholder="Income"
                 placeholder={type}
-                setSelected={(value) => { setType(value) }}
+                setSelected={async (value) => {
+                  setType(value);
+
+                }}
                 dropdownStyles={{ backgroundColor: colors.white }}
                 dropdownItemStyles={{
                   marginHorizontal: 10,
@@ -231,7 +234,7 @@ export default function TransactionModal({ route, navigation }) {
           <View style={styles.spacerStyle} />
           <View>
             <View>
-              <Text style={text.textLarger} >Date</Text>
+              <Text style={text.textLarger}>Date</Text>
             </View>
             <TouchableOpacity onPress={() => setShowDatePicker(true)}>
               <InputPrimary
@@ -252,7 +255,12 @@ export default function TransactionModal({ route, navigation }) {
               onChange={(event, date) => {
                 setDate(date);
                 setShowDatePicker(false);
-                setParams((prev) => { return { ...prev, ["created_at"]: date.toISOString().slice(0, 10) } })
+                setParams((prev) => {
+                  return {
+                    ...prev,
+                    ["created_at"]: date.toISOString().slice(0, 10),
+                  };
+                });
               }}
             />
           )}
@@ -265,9 +273,11 @@ export default function TransactionModal({ route, navigation }) {
               placeholder="Enter amount"
               customStyle={{ marginTop: 10 }}
               value={params.money + ""}
-              onChange={
-                (value) => { setParams((prev) => { return { ...prev, money: +value } }) }
-              }
+              onChange={(value) => {
+                setParams((prev) => {
+                  return { ...prev, money: +value };
+                });
+              }}
             />
           </View>
           <View style={styles.spacerStyle}></View>
@@ -280,9 +290,11 @@ export default function TransactionModal({ route, navigation }) {
               placeholder="Enter note"
               customStyle={{ marginTop: 10 }}
               value={params.note}
-              onChange={
-                (value) => { setParams((prev) => { return { ...prev, note: value } }) }
-              }
+              onChange={(value) => {
+                setParams((prev) => {
+                  return { ...prev, note: value };
+                });
+              }}
             />
           </View>
           <View style={{ marginTop: 30 }}>

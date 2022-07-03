@@ -124,7 +124,7 @@ export default function MoneyBoxModal({ route, navigation }) {
               </View>
               <InputPrimary
                 value={params.budget}
-                onChange={(value) => setParams((prev) => { return { ...prev, budget: +value } })}
+                onChange={(value) => setParams((prev) => { return { ...prev, budget: value } })}
                 placeholder="Enter your budget"
                 customStyle={{ marginTop: 5 }}
               />
@@ -136,7 +136,7 @@ export default function MoneyBoxModal({ route, navigation }) {
               </View>
               <InputPrimary
                 placeholder="Enter money goal"
-                onChange={(value) => setParams((prev) => { return { ...prev, money_goal: +value } })}
+                onChange={(value) => setParams((prev) => { return { ...prev, money_goal: value } })}
                 value={params.money_goal}
                 customStyle={{ marginTop: 5 }}
               />
@@ -149,7 +149,7 @@ export default function MoneyBoxModal({ route, navigation }) {
               <InputPrimary
                 placeholder="Enter saving money"
                 value={params.saving_money}
-                onChange={(value) => setParams((prev) => { return { ...prev, saving_money: +value } })}
+                onChange={(value) => setParams((prev) => { return { ...prev, saving_money: value } })}
                 customStyle={{ marginTop: 5 }}
               />
             </View>
